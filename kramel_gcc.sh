@@ -147,16 +147,17 @@ fi
 
 fi
 }
-
+curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/f34969ebfdbf4133aeccb1b76e07603284d8df95.patch | git am
 compile_kernel
 pacakge_zip
 curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/cc0f575d69d8e302536240c1ea5e5e3d50748212.patch | git am
 curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/8d4ecaa855c484fa02092865d1d305ce2f7656cf.patch | git am
-ZIPNAME="lybkernel-ocuv-$DEVICE-$ZIPDATE.zip"
+ZIPNAME="lybkernel-gaming-ocuv-$DEVICE-$ZIPDATE.zip"
 compile_kernel
 pacakge_zip
 git reset --hard origin/eleven-riced
 ZIPNAME="lybkernel-public-$DEVICE-$ZIPDATE.zip"
+git revert 53f5a29d171aa744f39fc8aa56ee9eef32072fad --no-edit
 sed -i 's/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI=y/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI_STOCK=y/g' arch/arm64/configs/vayu_gcc_defconfig
 sed -i 's/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS=y/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS_STOCK=y/g' arch/arm64/configs/vayu_gcc_defconfig
 compile_kernel
