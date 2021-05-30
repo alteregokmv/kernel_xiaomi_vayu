@@ -59,10 +59,7 @@ make O=$OUT_PATH ARCH=arm64 $DEVICE_CONFIG
 make -j$(nproc --all) O=$OUT_PATH \
                              ARCH=arm64 \
 			     CROSS_COMPILE_ARM32=arm-eabi- \
-			     CROSS_COMPILE=aarch64-elf- \
-			     AR=aarch64-elf-ar \
-			     OBJDUMP=aarch64-elf-objdump \
-			     STRIP=aarch64-elf-strip 2>&1 | tee error.log
+			     CROSS_COMPILE=aarch64-elf- 
 
 # Building DTBO
 # https://android.googlesource.com/platform/system/libufdt/+archive/master/utils.tar.gz
