@@ -5,7 +5,7 @@ export ARCH=arm64
 export SUBARCH=arm64
 export DTC_EXT=dtc
 export DEVICE=vayu
-export DEVICE_CONFIG=vayu_gcc_defconfig
+export DEVICE_CONFIG=vayu_user_defconfig
 
 # Mandatory for vayu, but custom build seems to break something...
 export BUILD_DTBO=false
@@ -145,6 +145,7 @@ fi
 fi
 }
 ZIPNAME="lybkernel-tsmod_noeff-$DEVICE-$ZIPDATE.zip"
+sed -i 's/lyb_boost_def = false/lyb_boost_def = true/g' drivers/misc/lyb_perf.c
 curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/f34969ebfdbf4133aeccb1b76e07603284d8df95.patch | git am
 compile_kernel
 pacakge_zip
@@ -152,6 +153,7 @@ pacakge_zip
 curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/cc0f575d69d8e302536240c1ea5e5e3d50748212.patch | git am
 curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/8d4ecaa855c484fa02092865d1d305ce2f7656cf.patch | git am
 ZIPNAME="lybkernel-tsmod_noeff-ocuv-$DEVICE-$ZIPDATE.zip"
+sed -i 's/lyb_boost_def = false/lyb_boost_def = true/g' drivers/misc/lyb_perf.c
 compile_kernel
 pacakge_zip
 
@@ -159,20 +161,23 @@ git reset --hard origin/eleven-riced
 ZIPNAME="lybkernel-tsmod-$DEVICE-$ZIPDATE.zip"
 curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/f34969ebfdbf4133aeccb1b76e07603284d8df95.patch | git am
 sed -i 's/lyb_boost_def = false/lyb_boost_def = true/g' drivers/misc/lyb_perf.c
+sed -i 's/lyb_eff_def = false/lyb_eff_def = true/g' drivers/misc/lyb_perf.c
 compile_kernel
 pacakge_zip
 
 git reset --hard origin/eleven-riced
 ZIPNAME="lybkernel-stock-$DEVICE-$ZIPDATE.zip"
 sed -i 's/lyb_boost_def = false/lyb_boost_def = true/g' drivers/misc/lyb_perf.c
-sed -i 's/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI=y/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI_STOCK=y/g' arch/arm64/configs/vayu_gcc_defconfig
-sed -i 's/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS=y/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS_STOCK=y/g' arch/arm64/configs/vayu_gcc_defconfig
+sed -i 's/lyb_eff_def = false/lyb_eff_def = true/g' drivers/misc/lyb_perf.c
+sed -i 's/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI=y/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI_STOCK=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS=y/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS_STOCK=y/g' arch/arm64/configs/vayu_user_defconfig
 compile_kernel
 pacakge_zip
 
 git reset --hard origin/eleven-riced
 ZIPNAME="lybkernel-stock_noeff-$DEVICE-$ZIPDATE.zip"
-sed -i 's/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI=y/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI_STOCK=y/g' arch/arm64/configs/vayu_gcc_defconfig
-sed -i 's/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS=y/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS_STOCK=y/g' arch/arm64/configs/vayu_gcc_defconfig
+sed -i 's/lyb_boost_def = false/lyb_boost_def = true/g' drivers/misc/lyb_perf.c
+sed -i 's/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI=y/CONFIG_TOUCHSCREEN_NT36xxx_HOSTDL_SPI_STOCK=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS=y/CONFIG_TOUCHSCREEN_NVT_DEBUG_FS_STOCK=y/g' arch/arm64/configs/vayu_user_defconfig
 compile_kernel
 pacakge_zip
