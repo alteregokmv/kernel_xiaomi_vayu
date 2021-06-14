@@ -144,18 +144,46 @@ fi
 
 fi
 }
+
+use_almk () {
+sed -i 's/# CONFIG_ANDROID_LOW_MEMORY_KILLER is not set/CONFIG_ANDROID_LOW_MEMORY_KILLER=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/# CONFIG_ANDROID_LOW_MEMORY_KILLER_AUTODETECT_OOM_ADJ_VALUES is not set/CONFIG_ANDROID_LOW_MEMORY_KILLER_AUTODETECT_OOM_ADJ_VALUES=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/# CONFIG_MEMCG is not set/CONFIG_MEMCG=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/# CONFIG_MEMCG_SWAP is not set/CONFIG_MEMCG_SWAP=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/# CONFIG_MEMCG_SWAP_ENABLED is not set/CONFIG_MEMCG_SWAP_ENABLED=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/# CONFIG_PSI is not set/CONFIG_PSI=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/# CONFIG_PROCESS_RECLAIM is not set/CONFIG_PROCESS_RECLAIM=y/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/CONFIG_ANDROID_SIMPLE_LMK=y/# CONFIG_ANDROID_SIMPLE_LMK is not set/g' arch/arm64/configs/vayu_user_defconfig
+}
+
+curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/f34969ebfdbf4133aeccb1b76e07603284d8df95.patch | git am
+curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/cc0f575d69d8e302536240c1ea5e5e3d50748212.patch | git am
+curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/8d4ecaa855c484fa02092865d1d305ce2f7656cf.patch | git am
+curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/f9b6bcbf717de2eb5414521332388f88dd0395b4.patch | git am
+ZIPNAME="lybkernel-personal-$DEVICE-$ZIPDATE.zip"
+sed -i 's/CONFIG_DRM_MSM_KCAL_CTRL=y/# CONFIG_DRM_MSM_KCAL_CTRL is not set/g' arch/arm64/configs/vayu_user_defconfig
+sed -i 's/CONFIG_LOCALVERSION="-lybkernel-vayu/CONFIG_LOCALVERSION="-lybkernel-vayu-personal/g' arch/arm64/configs/vayu_user_defconfig
+compile_kernel
+pacakge_zip
+
+git reset --hard origin/eleven-riced
 ZIPNAME="lybkernel-tsmod_noeff-$DEVICE-$ZIPDATE.zip"
 sed -i 's/lyb_boost_def = false/lyb_boost_def = true/g' drivers/misc/lyb_perf.c
+sed -i 's/CONFIG_LOCALVERSION="-lybkernel-vayu/CONFIG_LOCALVERSION="-lybkernel-vayu-tsmod/g' arch/arm64/configs/vayu_user_defconfig
 curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/f34969ebfdbf4133aeccb1b76e07603284d8df95.patch | git am
 compile_kernel
 pacakge_zip
 
-curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/cc0f575d69d8e302536240c1ea5e5e3d50748212.patch | git am
-curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/8d4ecaa855c484fa02092865d1d305ce2f7656cf.patch | git am
-ZIPNAME="lybkernel-tsmod_noeff-ocuv-$DEVICE-$ZIPDATE.zip"
+git reset --hard origin/eleven-riced
+use_almk
+ZIPNAME="lybkernel-tsmod_noeff_almk-$DEVICE-$ZIPDATE.zip"
 sed -i 's/lyb_boost_def = false/lyb_boost_def = true/g' drivers/misc/lyb_perf.c
+sed -i 's/CONFIG_LOCALVERSION="-lybkernel-vayu/CONFIG_LOCALVERSION="-lybkernel-vayu-tsmod_almk/g' arch/arm64/configs/vayu_user_defconfig
+curl https://github.com/lybdroid/kernel_xiaomi_vayu/commit/f34969ebfdbf4133aeccb1b76e07603284d8df95.patch | git am
 compile_kernel
 pacakge_zip
+
+exit
 
 git reset --hard origin/eleven-riced
 ZIPNAME="lybkernel-tsmod-$DEVICE-$ZIPDATE.zip"
